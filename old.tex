@@ -1,0 +1,925 @@
+\documentclass[8pt,landscape,a4paper]{extarticle}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[scaled]{helvet}
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{multicol}
+\usepackage[margin=0.2cm, top=0.2cm, bottom=0.2cm, landscape]{geometry} % Extreme margins
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tcolorbox} % Better colored boxes
+\usepackage{anyfontsize}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[eulergreek]{sansmath}
+
+% \sansmath
+
+% --- Colors from your screenshot ---
+\definecolor{myyellow}{RGB}{255, 255, 200} % Light yellow for definitions
+\definecolor{myred}{RGB}{255, 220, 220}    % Light red for lemmas/theorems
+\definecolor{mylightgray}{RGB}{251, 251, 251}
+\definecolor{mygray}{RGB}{175, 175, 175}
+
+
+% --- Formatting Tweaks ---
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\linespread{0.8} % Very tight line spacing
+
+% --- Custom Boxes for Definitions (Yellow) and Theorems (Red) ---
+\newtcolorbox{defn}[1][]{
+  colback=myyellow,
+  colframe=myyellow!80!black,
+  boxrule=1pt,
+  left=1pt, right=1pt, top=1pt, bottom=1pt,
+  arc=0pt, outer arc=0pt,
+  title={#1},
+  coltitle=black,
+  fonttitle=\bfseries,
+  attach title to upper={\ --\ },
+  after skip=2pt
+}
+
+\newtcolorbox{thm}[1][]{
+  colback=myred,
+  colframe=myred!80!black,
+  boxrule=1pt,
+  left=1pt, right=1pt, top=1pt, bottom=1pt,
+  arc=0pt, outer arc=0pt,
+  title={#1},
+  coltitle=black,
+  fonttitle=\bfseries,
+  attach title to upper={\ --\ },
+  after skip=2pt
+}
+
+\newtcolorbox{obs}[1][]{
+  colback=mygray,
+  colframe=myred!80!black,
+  boxrule=1pt,
+  left=1pt, right=1pt, top=1pt, bottom=1pt,
+  arc=0pt, outer arc=0pt,
+  title={#1},
+  coltitle=black,
+  fonttitle=\bfseries,
+  attach title to upper={\ --\ },
+  after skip=2pt
+}
+
+\newtcolorbox{note}[1][]{
+  colback=mylightgray,
+  colframe=myred!80!black,
+  boxrule=1pt,
+  left=1pt, right=1pt, top=1pt, bottom=1pt,
+  arc=0pt, outer arc=0pt,
+  title={#1},
+  coltitle=black,
+  fonttitle=\bfseries,
+  attach title to upper={\ --\ },
+  after skip=2pt
+}
+
+\newcommand{\twoboxes}[4]{%
+  \noindent
+  \begin{minipage}[t]{#1}%
+    #2%
+  \end{minipage}\hfill%
+  \begin{minipage}[t]{#3}%
+    #4%
+  \end{minipage}%
+}
+
+\newcommand{\twoboxeshalf}[2]{%
+  \twoboxes{0.49\linewidth}{#1}{0.49\linewidth}{#2}%
+}
+
+% Enumeration lists
+\newlist{props}{enumerate}{1}
+\setlist[props]{label=(\roman*), nosep, leftmargin=*}
+
+\newlist{compactitem}{itemize}{1}
+\setlist[compactitem]{label=\textbullet, nosep, leftmargin=*}
+
+\newlist{compactlist}{enumerate}{3}
+\setlist[compactlist]{label=\arabic*., nosep, leftmargin=*}
+
+% --- Shortcuts for your notation ---
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\vect}[1]{\begin{pmatrix} #1 \end{pmatrix}} % Shortcut for column vectors
+\newcommand{\bv}[1]{\mathbf{#1}}
+
+\begin{document}
+
+\fontsize{6}{8}\selectfont
+
+\begin{multicols*}{3}[\setlength{\columnseprule}{0.4pt}]
+
+\begin{defn}[Def 1.1 Vector]
+Let $m \geq 0$ be a natural number. An $m$-dimensional coordinate vector is an element of $\R^m$. 
+$\bv{v} = \vect{\bv{v}_1 \\ \vdots \\ \bv{v}_m} \in \R^m$.
+\end{defn}
+
+\begin{defn}[Def 1.2/1.3 Operations]
+
+\begin{tabularx}{\linewidth}{@{} l X @{}}
+    \toprule
+    \textbf{Vector Addition} & \textbf{Scalar Multiplication} \\
+    \midrule
+    $\bv{v}, \bv{w}\in \R^m : \bv{v}+\bv{w} = \vect{v_1+w_1 \\ \vdots \\ \bv{v}_m+\bv{w}_m}$ & 
+    $\bv{v}\in \R^m, \lambda \in \R : \lambda \cdot \bv{v}= \vect{\lambda \bv{v}_1 \\ \vdots \\ \lambda \bv{v}_m}$ \\
+    \bottomrule
+\end{tabularx}
+
+\end{defn}
+
+\begin{defn}[Def 1.4 Linear Combination]
+$\bv{v} \cdot \bv{w} \in \R^m$ is a lin. comb. of $\bv{v}$ and $\bv{w}$: $\lambda \bv{v}+ \mu \bv{w}\in \R^m$.
+\end{defn}
+
+\begin{obs}[Fact 1.5]
+    Every vector in $\R^2$ is a linear combination of $\vect{2\\3}$ and $\vect{3\\-1}$.
+\end{obs}
+
+\begin{defn}[Def 1.7 Combinations Types]
+Let $\lambda_1 + \dots + \lambda_n = 1$. A lin. comb $\sum \lambda_i \bv{v}_i$ is called:
+
+\begin{props}
+    \item \textbf{Affine:} if $\sum \lambda_i = 1$.
+    \item \textbf{Conic:} if $\lambda_i \geq 0$.
+    \item \textbf{Convex:} if both Affine and Conic ($\sum \lambda_i = 1, \lambda_i \geq 0$).
+\end{props}
+\end{defn}
+
+\begin{defn}[Def 1.9 Scalar Product]
+$\bv{v}, \bv{w} \in \R^m$.
+
+$\bv{v}\cdot \bv{w} = \sum_{i=1}^m \bv{v}_i \bv{w}_i = \bv{v}_1 \bv{w}_1 + \dots + \bv{v}_m \bv{w}_m$.
+\end{defn}
+
+\begin{obs}[Obs 1.10]
+    $\bv{v}, \bv{w}, \bv{z}\in \R^m, \lambda \in \R$.
+
+    \begin{props}
+    \item $\bv{v} \cdot \bv{w} = \bv{w} \cdot \bv{v}$ (Sym)
+    \item $(\bv{v}+\bv{w})\cdot \bv{z} = \bv{v}\cdot \bv{z}+ \bv{w}\cdot \bv{z}$ (Dist)
+    \item $(\lambda \bv{v}) \cdot \bv{w} = \lambda (\bv{v} \cdot \bv{w})$ (taking out scalars)
+    \item $\bv{v} \cdot \bv{v} \geq 0$, eq only if $\bv{v}=0$.
+\end{props}
+\end{obs}
+
+
+
+\begin{defn}[Def 1.11 Euclidean Norm]
+$\bv{v} \in \R^m ; \|\bv{v}\| = \sqrt{\bv{v} \cdot \bv{v}}$.
+\end{defn}
+
+\begin{thm}[Lemma 1.12 Cauchy-Schwarz]
+    For any $\bv{v}, \bv{w} \in \R^m: |\bv{v} \cdot \bv{w}| \leq ||\bv{v}\| \|\bv{w}\|$
+\end{thm}
+
+\begin{defn}[Def 1.14 Angle]
+    $\bv{v}, \bv{w}  \in \R^m \neq 0$. Angle $\alpha \in [0, 180^\circ]$ is:
+    $\cos(\alpha) = \frac{\bv{v} \cdot \bv{w}}{\|\bv{v}\| \|\bv{w}\|} \in [-1,1]$
+\end{defn}
+
+\begin{defn}[Def 1.15 Orthogonal]
+    $\bv{v}, \bv{w}$ are orthogonal if $\bv{v} \cdot \bv{w} = 0$. Angle is $90^\circ$.
+\end{defn}
+
+\begin{defn}[Def 1.16 Hyperplane through the origin]
+    Let $\bv{d} \in \R^m,\bv{d}\neq 0$, the set
+    $H_\bv{d}=\left\{\bv{v} \in \R^m:\bv{v}\cdot\bv{d}=0 \right\}$  \\
+    is called a \textit{hyperplane} through the origin
+\end{defn}
+
+\begin{thm} [Lemma 1.17 Triangle Inequality]
+ Let $\bv{v},\bv{w}\in \R^m$. Then $\|\bv{v}+\bv{w}\|\leq \|\bv{v}\|+\|\bv{w}\|$
+\end{thm}
+
+\begin{defn}[Def 1.20 Covector]
+    Let $\bv{v}\in \R^m$. The covector $\bv{v}^\top$ (also called the transpose of $\bv{v}$)
+    is the function $\bv{v}^\top:\R^m \mapsto \R, \bv{v}^\top:x\mapsto\sum_{i=1}^{m}\bv{v}_ix_i$.
+
+    $(\bv{v}^\top)^\top:=\bv{v}$.
+\end{defn}
+
+\begin{defn}[Def 1.21 Linear Independence]
+    Vectors $\bv{v}_1, \bv{v}_2,\dots, \bv{v}_n\in \R^m$ are linearly dependent if at least one of them is a lin. comb. of the others,
+    i.e. there is an index $k\in[n]$ and scalars $\lambda_j$ such that \\
+    $\bv{v}_k=\sum\limits_{\substack{j=1 \\ j\neq k}}^{n}\lambda_j \bv{v}_j$
+    Else, they're \textbf{linearly independent}.
+\end{defn}
+
+\begin{thm}[Lemma 1.22 Linear independence alternative]
+    Vectors are linearly dependent iff:
+    \begin{props}
+        \item One is a lin. comb. of others.
+        \item There are scalars $\lambda_1, \dots, \lambda_n$ besides $0,\dots,0$ such that $\sum_{j=1}^n \lambda_j\bv{v}_j=0$ ($0$ is non-trivial lin. comb. of the vectors.)
+        \item At least one of the vectors is a lin. comb. of the previous ones.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Corollary 1.23 Alternative definitions of linear independence]
+    Let $\bv{v}_1, \dots, \bv{v}_n \in \R^m$. The following statements are equivalent. (Either all true or all false)
+    \begin{props}
+        \item None of the vectors is a lin. comb. of the other ones. \\
+        $\implies$ they are linearly independent.
+        \item There are no scalars $\lambda_1, \dots, \lambda_n$ besides $0, \dots, 0$, such that $\sum_{j=1}^n \lambda_j\bv{v}_j=0$. We also say, that $0$ can only be written as a trivial lin. comb. of the vectors.
+        \item None of the vectors is a lin. comb. of the previous ones.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Lemma 1.24]
+    Let $\bv{v}_1,\dots\bv{v}_n\in \R^m$ be linearly independent, $\bv{v}\in\R^m$. \\
+    $\bv{v}=\sum\limits_{j=1}^n \lambda_j\bv{v}_j=\sum\limits_{j=1}^n\mu_j\bv{v}_j$ are two ways of writing $\bv{v}$ as a lin. comb. of $\bv{v}_1,\dots,\bv{v}_n$. then $\lambda_j=\mu_j$ for all $j\in[n]$.
+\end{thm}
+
+\begin{defn}[Def 1.25 Span]
+    Let $\bv{v}_1,\dots,\bv{v}_n\in \R^m$, Their \textit{span} is the set of all linear combinations.
+
+    $\text{Span}(\bv{v}_1,\dots,\bv{v}_n):=\left\{\sum\limits_{j=1}^n \lambda_j\bv{v}_j:\lambda_j\in \R\; \text{for all}\; j\in [n]\right\}$
+\end{defn}
+
+\begin{thm}[Lemma 1.26]
+    Let $\bv{v}_1,\dots,\bv{n}\in \R^n$, and let $\bv{v}\in \R^m$ be a lin. comb. of $\bv{v}_1,\dots,\bv{v}_n$
+
+    Then $\underbrace{\text{Span}(\bv{v}_1,\dots,\bv{v}_n)}_{S}=\underbrace{\text{Span}(\bv{v}_1,\dots,\bv{v}_n,\bv{v})}_{T}$
+\end{thm}
+
+\begin{thm}[Corollary 1.27]
+    Let $\bv{v}_1,\dots,\bv{v}_n\in\R^m$ and suppose that, for some $k\in[n],\bv{v}_k$, is a lin. comb. of the other vectors. Then, \\
+    $\text{Span}(\bv{v}_1,\dots,\bv{v}_n)=\text{Span}(\bv{v}_1,\dots,\bv{v}_{k-1},\bv{v}_k,\bv{v}_k+1,\bv{v})$
+\end{thm}
+
+\begin{defn}[Def 2.1 Matrix]
+    An $m\times n$ matrix is a table of real numbers with $m$ rows and $n$ columns. They're denoted by upper-case letters $(A,B,\dots)$ and are written with the corresponding lower case letters and two indices, as in
+    $A=\begin{bmatrix}
+        a_{11} & a_{12} & \dots & a_1n \\
+        a_{21} & a_{22} & \dots & \vdots \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \dots  & a_mn
+    \end{bmatrix}, A=[a_{ij}]_{i=1}^{m}\;_{j=1}^n$
+\end{defn}
+
+\begin{defn}[{Def 2.2 Matrix addition, Scalar Multiplication, Zero Matrix, Square Matrix}]
+    Let $A=[a_{ij}]_{i=1}^m\;_{j=1}^m$ and $B=[b_{ij}]_{i=1}^m\;_{j=1}^n$ be $m\times n$ matrices, $\lambda\in\R$ a scalar.
+    \begin{props}
+        \item The matrix $A+B:=[a_{ij}+b_{ij}]_{i=1}^m\;_{j=1}^n$ is the sum of $A$ and $B$.
+        \item The matrix $\lambda A:=[\lambda a_{ij}]_{i=1}^m\;_{j=1}^n$ is a scalar multiple of $A$.
+        \item The matrix $[a]_{i=1}^m\;_{j=1}^m$ is the $m\times n$ zero matrix, written as $0$.
+        \item If $m=n$ (number of rows equals columns) then $A$ is a \textit{square} matrix.
+    \end{props}
+\end{defn}
+
+\begin{defn}[Def 2.3 Square matrix classes]
+    Let $A=[a_{ij}]_{i=0}^m\;_{j=0}^m$  be a $m\times m$ square matrix. If $i<j / i=j / i>j$ then $a_{ij}$ is said to be above / on / below the diagonal.
+    \begin{props}
+        \item If $a_{ij}=1$ for all $i$ (diagonal are all $1$) and $a_{ij}=0$ for all $i\neq j$ (non-diagonal entries are $0$), then $A$ is the \textit{identity matrix}, denoted by $I$ for every $m$. A different way of defining $I$ is: $I:=[\delta_{ij}]_{i=1}^m,_{j=1}^m$ there $\delta_{ij}$ is the Kronecker Delta, defined as $1$ if $j=1$ and $0$ otherwise.
+        \item If $a_{ij}=0$ for all $i\neq j$, then $A$ is a diagonal matrix.
+        \item If $a_{ij}=0$ for all $i>j$, then $A$ is an \textit{upper} triangular matrix.
+        \item If $a_{ij}=0$ for all $i<j$, then $A$ is a \textit{lower} triangular matrix.
+        \item If $a_{ij}=a_{ji}$ for all $i,j$, then $A$ is a \textit{symmetric} matrix.
+    \end{props}
+\end{defn}
+
+\begin{obs}[Def 2.4 Matrix Vector multiplication in column notation] \\
+    Let $A=\vect{| & | & & | \\ \bv{v}_1 & \bv{v}_2 & \dots & \bv{v}_n \\ | & | & & |}\in \R^{m\times n},\bv{x}=\vect{\bv{x}_1 \\ \vdots \\ \bv{x}_n}\in \R^n$.
+    
+    The vector $A\bv{x}=\sum\limits_{j=1}^n\bv{x}_j\bv{v}_j\in \R^m$ is the product of $A$ and $\bv{x}$.
+\end{obs}
+
+\begin{obs}[Obs 2.5]
+    Let $A$ be an $m \times n$ matrix.
+    \begin{props}
+        \item A vector $\bv{b}\in \R^m$ is a lin. comb. of the columns of $A$ if and only if there is a vector $\bv{x}\in\R^n$ (of suitable scalars) such that $A\bv{x}=\bv{b}$.
+        \item The columns of $A$ are linear independent if and only if $\bv{x}=\bv{0}$ is the only vector such that $A\bv{x=\bv{0}}$.
+    \end{props}
+\end{obs}
+
+\begin{obs}[Matrix vector multiplication with A in table notation] \\
+    Let $A=\begin{bmatrix}
+        a_{11} & \dots & a_{1n} \\
+        \vdots & \ddots & \vdots \\
+        a_{m1} & \dots & a_{mn}
+    \end{bmatrix}=[a_{ij}]_{i=1}^m,_{j=1}^n,\bv{x}=\vect{\bv{x}_1 \\ \bv{x}_2 \\ \vdots \\ \bv{x}_n}=(\bv{x})_{j=1}^n\in\R^n$.
+
+    Then $A\bv{x}=\begin{bmatrix}
+        a_{11}\bv{x}_1 + a_{12}\bv{x}_2 + \dots + a_{1n}\bv{x}_n \\
+        a_{21}\bv{x}_1 + a_{22}\bv{x}_2 + \dots + a_{2n}\bv{x}_n \\
+        \vdots \\
+        a_{m1}\bv{x}_1 + a_{m2}\bv{x}_2 + \dots + a_{mn}\bv{x}_n
+    \end{bmatrix}=\left(\sum\limits_{j=1}^n a_{ij}\bv{x}_j \right)_{i=1}^m \in\R^m$
+\end{obs}
+
+\begin{thm}[Corollary 2.7 Identity vector multiplication]
+    Let $I$ be the $m\times m$ identity matrix. Then $I\bv{x}=\bv{x}$ for all $\bv{x}\in\R^m$.
+\end{thm}
+
+\begin{obs}[Obs 2.8 Matrix vector multiplication with A in row notation] \\
+    Let $A=\begin{bmatrix}
+        - & \bv{v}_1^\top & - \\
+        & \vdots & \\
+        - & \bv{v}_m & -
+    \end{bmatrix}\in\R^{m\times n},\bv{x}\in\R^n$, then $A\bv{x}=\vect{\bv{v}_1^\top\bv{x_1} \\ \vdots \\ \bv{u}_m^\top\bv{x}_m}$ 
+\end{obs}
+
+\begin{defn}[Def 2.9 Column Space]
+    Let $A$ be an $m\times n$ matrix. The column space $\text{C}(A)$ of $A$ is the span (set of all linear combinations) of the columns,
+    $\text{C}(A):=\left\{A\bv{x}:\bv{x}\in\R^n\right\}\subseteq\R^m$
+\end{defn}
+
+\begin{defn}[Def 2.10 (In)dependent columns, and column rank, and rank of a matrix]
+    Let $A=\begin{bmatrix}
+        | & & | \\
+        \bv{v}_1 & \dots & \bv{v}_n \\
+        | & & |
+    \end{bmatrix}$ be an $m\times n$ matrix with columns $\bv{v}_1,\bv{v}_2,\dots,\bv{v_n}\in\R^m$. Column $\bv{v}_j$ is called independent if $\bv{v}_j$ is not a linear combination of $\bv{v}_1,\dots,\bv{v}_{j-1}$. Otherwise, $\bv{v}_j$ is called dependent. The rank of $A$, written as $\text{rank}(A)$, is the number of independent columns of $A$. The rank is also sometimes called the column rank.
+\end{defn}
+
+\begin{thm}[Lemma 2.11 Independent columns span the column space]
+    Let $A$ be an $m\times n$ matrix with $r$ independent columns, and let $C$ be the $m\times r$ sub-matrix containing the independent columns. Then $\text{C}(A)=C(C)$.
+\end{thm}
+
+\begin{defn}[Def 2.12 Transpose]
+    Let $A=[a_{ij}]_{i=1}^m,_{j=1}^n$ be an $m\times n$ matrix. The transpose of $A$ is the $n\times m$ matrix
+    $A^\top:=B=[b_{ij}]_{i=1}^n,_{j=1}^m$, where $b_{ij}=a_{ji}$ for all $i,j$.
+\end{defn}
+
+\twoboxeshalf{
+\begin{obs}[Obs 2.13 Double Transpose] \\
+    $(A^\top)^\top=A$
+    \end{obs}
+}{
+\begin{defn}[Def 2.14 Row space is the column space of the transpose]
+    $R(A)=C(A^\top)$
+\end{defn}
+}
+
+\begin{thm}[Lemma 2.15 Rank 1 Matrices]
+    Let $A$ be an $m\times n$ matrix. The following two statements are equivalent:
+    \begin{props}
+        \item $\text{Rank}(A)=1$
+        \item There are non-zero vectors $\bv{v}\in\R^m$ and $\bv{w}\in R^n$ such that $A=[\bv{v}_i\bv{w}_j]_{i=1}^m,_{j=1}^n$.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Corollary 2.16 Transpose of a rank 1 matrix] 
+    Let $A$ be an $m\times n$ matrix with $\text{Rank}(A)=1$, then also $\text{Rank}(A^\top)=1$
+\end{thm} 
+
+\begin{defn}[Def 2.17 Nullspace]
+    Let $A$ be an $m\times n$ matrix. The \textit{nullspace} of $A$ is the set:
+    $\text{N}(A):=\left\{ \bv{x}\in\R^n :A\bv{x}=0\right\}\subseteq\R^n$. In other words, the set of vectors that are squished to zero in the transformation by $A$.
+\end{defn}
+
+\begin{defn}[Def 2.18 Matrix Transformation]
+    Let $A$ be an $m\times n$ matrix. The function $T_A:\R^n\mapsto\R^m$ defined by $T_A:\bv{x}\mapsto A\bv{x}$ is the matrix transformation with matrix A.
+\end{defn}
+
+\begin{thm}[Lemma 2.19 Linearity of matrix transformations]
+    Let $A$ be an $m\times n$ matrix, $\bv{x}_1,\bv{x}_2\in\R^n$ and $\lambda_1,\lambda_2,\in\R$. Then $A(\lambda_1\bv{x}_1+\lambda_2\bv{x}_2)=\lambda_1A\bv{x}_1+\lambda_2A\bv{x}_2$.
+\end{thm}
+
+\begin{defn}[Def 2.21 Linear Transformation, Linear functional]
+    A function $T:\R^n\mapsto\R^m / T:\R^n\mapsto\R$ is called a linear transformation / linear functional if the following linearity axiom holds for all $\bv{x}_1,\bv{x}_2\in\R^n$ and all $\lambda_1,\lambda_2\in\R$:
+    $$T(\lambda_1\bv{x}_1+\lambda_2\bv{x}_2)=\lambda_1T(\bv{x}_1)+\lambda_2T(\bv{x}_2)$$
+\end{defn}
+
+\begin{obs}[Obs 2.22]
+    Every matrix transformation is a linear transformation
+\end{obs}
+
+\begin{thm}[Lemma 2.23]
+    A function $T:\R^n\mapsto\R^m / T:\R^n\mapsto\R$ is a linear transformation / linear functional iff. the following two linear axioms hold for all $\bv{x},\bv{x}'\in\R^n$ and all $\lambda\in\R$.
+    \begin{props}
+        \item $T(\bv{x}+\bv{x}')=T(\bv{x})+T(\bv{x}')$
+        \item $T(\lambda\bv{x})=\lambda T(\bv{x})$
+    \end{props}
+\end{thm}
+
+\begin{thm}[Lemma 2.24]
+    Let $T:\R^n\mapsto\R^m / T:\R^n\mapsto\R$ be a linear transformation. Then $T(0)=0$
+\end{thm}
+
+\begin{thm}[Lemma 2.25]
+    Let $T:\R^n\mapsto\R^m / T:\R^n\mapsto\R$ be a linear transformation, let $\bv{x}_1,\bv{x}_2,\dots,\bv{x}_l \in\R^n$ and $\lambda_1,\dots,\lambda_l\in\R$. Then $T=\left(\sum_{j=1}^l \lambda_j\bv{x}_j\right)=\sum_{j=1}^l \lambda_j T(\bv{x}_j)$
+\end{thm}
+
+\begin{thm}[Theorem 2.26]
+    Let $T:\R^n\mapsto\R^m$ be a linear transformation. There is a unique $m\times n$ matrix $A$ such that $T=T_A$ (meaning that $T(\bv{x})=T_A(\bv{x})$ for all $\bv{x}\in\R^n$). This matrix is:
+    $A=\begin{bmatrix}
+        | & | & & | \\
+        T(e_1) & T(e_2) & \dots & T_(e_n) \\
+        | & |& & |
+    \end{bmatrix}$
+\end{thm}
+
+\begin{defn}[Def 2.27 Kernel and Image]
+    Let $T:\R^n\mapsto\R^m$ be a linear transformation. \\
+    The set $\text{Ker}(T):=\left\{\bv{x}\in\R^n:T(\bv{x})=\bv{0}\right\}\subseteq\R^n$ is the \textit{kernel} of $T$. The set $\text{Im}(T):=\left\{T(\bv{x}):\bv{x}\in\R^n\right\}\subseteq\R^m$ is the \textit{image} of $T$.
+\end{defn}
+
+\begin{obs}[Obs 2.28]
+    Let $T:\R^n\mapsto\R^m$ be a linear transformation and $A$ a unique $m\times n$ matrix (that exists by Theorem 2.26) such that $T=T_A$. Then $\text{Im}(A)=\text{C}(A)$, the \textit{image} is the \textit{column space} of $A$.
+\end{obs}
+
+\begin{obs}[Obs 2.29]
+    The \textit{kernel} is the \textit{null space} if $A$. $\text{Ker}(A)=\text{N}(A)$
+\end{obs}
+
+\begin{defn}[Def 2.33 Composition of functions]
+    Let $g:X\mapsto Y$ and $p:Y\mapsto Z$ be two functions where $X,Y,Z$ are arbitrary sets. Then there's a function $h:X\mapsto Z$, $h:X\mapsto f(g(X))$ is the composition of $f$ and $g$, written as $f \circ g$ (apply first $g$, then $f$)
+\end{defn}
+
+\begin{thm}[Lemma 2.34 Composition of matrix transformations]
+    Let $T_B:\R^b\mapsto\R^n$ and $T_A:\R^n\mapsto\R^a$ be two matrix transformations. The composition $T_A\circ T_B:\R^b\mapsto\R^a$, is another matrix transformation.
+\end{thm}
+
+\begin{thm}[Lemma 2.35 Matrix of the composition]
+    Let $A$ be an $a\times n$ matrix and $B=\begin{bmatrix}
+        | & & | \\
+        \bv{x}_1 & \dots & \bv{x}_b \\
+        | & & |
+    \end{bmatrix}$ an $n\times b$ matrix. The $a\times b$ matrix $C=\begin{bmatrix}
+        | & & | \\
+        A\bv{x}_1 & \dots & A\bv{x}_b \\
+        | & & |
+    \end{bmatrix}$ is the unique matrix that satisfies $T_C=T_A \circ T_B$.
+\end{thm}
+
+\begin{defn}[Def 2.36 Matrix multiplication in column notation] \\
+    Let $A$ be an $a\times n$ matrix and $B=\begin{bmatrix}
+        | & | & & | \\
+        \bv{x}_1 & \bv{x}_2 & \dots & \bv{x}_b \\
+        |& |& & |
+    \end{bmatrix}$ be an $n\times b$ matrix.
+    
+    The $a\times b$ matrix $AB:=\begin{bmatrix}
+        | & | & & | \\
+        A\bv{x}_1 & A\bv{x}_2 & \dots & A\bv{x}_b \\
+        | & |& & |
+    \end{bmatrix}$ is the product of $A$ and $B$.
+\end{defn}
+
+\begin{thm}[Corollary 2.37 Matrix of the composition]
+    Let $A$ be an $a\times n$ matrix and $B$ be an $n\times b$ matrix. Then $T_A\circ T_B=T_{AB}$. 
+\end{thm}
+
+\begin{thm}[Lemma 2.40]
+    Let $A$ be an $a\times n$ matrix and $B$ an $n\times b$ matrix. Then $(AB)^\top=B^\top A^\top$
+\end{thm}
+
+\begin{thm}[Corollary 2.41]
+    Let $I$ be the $m\times n$ identity matrix. Then $IA=A$ for all $m\times n$ matrices and $AI=A$ for all $n\times m$ matrices.
+\end{thm}
+
+\begin{thm}[Lemma 2.42]
+    Let $ABC$ be three matrices. Whenever the respective sums and products in the following are defined, we have
+    \begin{props}
+        \item $A(B+C)=AB+AC$ and $(A+B)C=AC+BC$ (distributivity)
+        \item $(AB)C=A(BC)$ (associativity)
+    \end{props}
+
+    \textbf{What is important is the \textit{direction} in which the matrices are multiplied together}
+\end{thm}
+
+\begin{defn}[Def 2.43 Covectors matrix multiplication]
+    Let $\bv{y}^\top=(\bv{y}_1,\bv{y}_2,\dots,\bv{y}_m)\in(\R^m)^*,A=\begin{bmatrix}
+        | & & | \\
+        \bv{v}_1 & \dots & \bv{v}_n \\
+        | & & |
+    \end{bmatrix}\in\R^{m\times n}$. \\
+    The covector $\bv{y}^\top A=(\bv{y}^\top\bv{v}_1, \dots, \bv{y}^\top\bv{v}_n)\in(\R^n)^*$ is the product of $\bv{y}^\top$ and $A$.
+\end{defn}
+
+\begin{defn}[Def 2.44]
+    Let $\bv{v}\in\R^m,\bv{w}\in\R^n$. The outer product $\bv{v}\bv{w}^\top$ of $\bv{v}$ and $\bv{w}$ is the $m\rtimes n$ matrix:
+    $$\bv{v}\bv{w}^\top:=\begin{bmatrix}
+        \bv{v}_1\bv{w}_1 & \dots & \bv{v}_1\bv{w}_n \\
+        \vdots & \ddots & \vdots \\
+        \bv{v}_m\bv{w}_1 & \dots & \bv{v}_m\bv{w}_n
+    \end{bmatrix}=[\bv{v}_i\bv{w}]_{i=1}^m,_{j=1}^n$$
+\end{defn}
+
+\begin{thm}[CR Decomposition]
+    Let $A$ be an $m\times n$ matrix of rank $r$ (Definition 2.10). Let $C$ be the $m\times r$ sub-matrix of $A$ containing the independent columns. Then there is a unique $r\times n$ matrix such that $A=CR$.
+\end{thm}
+
+\begin{defn}[Def 2.48 injective, surjective, and bijective functions]
+    Let $X,Y$ be sets of $f:x\mapsto Y$ a function.
+    \begin{props}
+        \item $f$ is called injective if for every $y\in Y$, there is at most one $x\in X$ with $f(x)=y$ \\
+        "for every possible output, at most one input leads to it".
+        \item $f$ is called surjective if for every $y\in Y$, there is at least one $x$ with $f(x)=y$
+        \item $f$ is called bijective if $f$ is both injective and surjective (forevery output, exactly one input leads to it).
+        \item The inverse of a bijective function $f$ is the function $f^{-1}:Y\mapsto X,y\mapsto$ the unique $x\in X$ such that $f(x)=y$.
+    \end{props}
+\end{defn}
+
+\begin{obs}[Fact 2.49 Bijective functions and their inverses]
+    If $f:X\mapsto Y$ is bijective, then $f^{-1}:Y\mapsto X$ is also bijective, and $(f^{-1})^{-1}=f$. Moreover, $f^{-1}\circ f= id$ and $f\circ f^{-1}=id$.
+\end{obs}
+
+\begin{thm}[Lemma 2.50 Wide matrix transformations are not injective]
+    Let $T_A:\R^n\mapsto \R^m$ be a matrix transformation, and $m<n$. Then, $T_A$ is not injective (and therefore also not bijective).
+\end{thm}
+
+\begin{thm}[Lemma 2.51 Tall matrix transformations are not surjective]
+    Let $T_A:\R^n\mapsto\R^m$ be a matrix transformation, and $m>n$. Then, $T_A$ is not surjective (therefore also not bijective).
+\end{thm}
+
+\begin{thm}[Lemma 2.52 The inverse of a bijective linear transformation]
+    Let $T:\R^m\mapsto\R^n$ be a bijective, linear transformation. Then, its inverse $T^{-1}:\R^m\mapsto\R^m$ is also a linear transformation (and bijective by Fact 2.49).
+\end{thm}
+
+\begin{thm}[Lemma 2.53 Bijective matrix transformations]
+    Let $A$ be an $m\times m$ matrix. The following three statements are equivalent:
+    \begin{props}
+        \item $T_A:\R^m\mapsto\R^m$ is bijective.
+        \item There is an $m\times m$ matrix $B$ such that $BA=I$
+        \item The columns of $A$ are linearly independent.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Lemma 2.54]
+    Let $A,B$ be $m\times m$ matrices such that $AB=I$, then $BA=I$.
+\end{thm}
+
+\begin{defn}[Def 2.56 Invertible and singular matrix]
+    Let $A$ be an $m\times m$ matrix. $A$ is \textbf{invertible} if and only if there is an $m\times m$ matrix $B$ such that $BA=I$ (By Lemma 2.53 this is the case if and only if $A$ has linearly independent columns). Otherwise, $A$ is called singular.
+\end{defn}
+
+\begin{defn}[Dev 2.57 Inverse Matrix]
+    Let $A$ be an invertible $m\times  m$ matrix. Then $A^{-1}$ is also invertible and $(A^{-1})^{-1}=A$.
+\end{defn}
+
+\begin{thm}[Lemma 2.59]
+    Let $A$ and $B$ be invertible $m\times m$ matrices. Then $AB$ is also invertivle and $(AB)^{-1}=B^{-1}A^{-1}$.
+\end{thm}
+
+\begin{thm}[Lemma 2.60]
+    Let $A$ be an invertible $m\times m$ matrix. THen the tranpose $A^\top$ is also invertible and $(A^\top)^{-1}=(A^{-1})^\top$
+\end{thm}
+
+\begin{defn}[Def 3.1 System of linear equations] \\
+    A system of linear equations in $m$ equations and $n$ variables $x_1, x_2, \dots, x_n$ is of the form: \\
+    $$\begin{matrix}
+        a_{11}x_1 &+& a_{12}x_2 & + & \dots & + & a_{1n}x_n &=b_1 \\
+        a_{21}x_1 &+& a_{22}x_2 & + & \dots & + & a_{2n}x_n & =b_2 \\
+        & & & & \vdots \\
+        a_{m1}+x_1 &+& a_{m2}x_2& + & \dots & + & a_{mn}x_n &=b_m
+    \end{matrix}$$
+    where the $a_{ij}$ and $b_i$ stand for known real numbers, and the $x_i$ stand for unknown real numbers that we want to compute such that they satisfy all the equations.
+    In matrix-=vector form, this can be written as:
+    $$A\bv{x}=\bv{b}:\underset{A_{m\times n}}{\begin{bmatrix}
+        a_{11} & a_{12} & \dots & a_{1n} \\
+        a_{21} & a_{22} & \dots & a_{2n} \\
+        \vdots & \vdots & \ddots & \dots \\
+        a_{m1} & a_{m2} & \dots & a_{mn}
+    \end{bmatrix}} \underset{\bv{x}\in\R^n}{\vect{\bv{x}_1 \\ \bv{x}_2 \\ \vdots \\ \bv{x}_n}}=\underset{\bv{b}\in\R^m}{\vect{\bv{b}_1 \\ \bv{b}_2 \\ \vdots \\ \bv{b}_n}}$$
+\end{defn}
+
+\begin{thm}[Lemma 3.2 Invariance of solutions]
+    Let $A$ be an $m\times n$ matrix and $M$ be an invertible $m\times m$ matrix. Then the two systems $A\bv{x}=\bv{b}$ and $MA\bv{x}=M\bv{b}$ have the same solutions $\bv{x}$.
+\end{thm}
+
+\begin{thm}[Lemma 3.3 Invariance of Nullspace]
+    Let $A$ be an $m\times n$ matrix and $M$ be an invertible $m\times m$ matrix. Then, $A$ and $MA$ have the same nullspace. $\text{N}(A)=\text{N}(MA)$
+\end{thm}
+
+\begin{thm}[Lemma 3.4 Invariance of linear independence]
+ Let $A$     be an $m\times n$ matrix and $M$ be an invertible $m\times m$ matrix. Then, $A$ has linearly independent columns, if and only if $MA$ has linearly independent columns.
+\end{thm}
+
+\begin{thm}[Lemma 3.5 Invariance of the rowspace]
+    Let $A$ be an $m\times n$ matrix and $M$ be an invertible $m\times m$ matrix. Then, $A$ and $MA$ has the same rowspace $\text{R}(A)=\text{R}(MA)$.
+\end{thm}
+
+\begin{thm}[Lemma 3.6Invariance of independent column indices and rank]
+    Let $A$ be an $m\times n$ matrix, $M$ an invertible $m\times m$ matrix. Then the following is true for all $j\in[n]$: Column $j$ of $A$ is independent if and only if column $j$ of $MA$ is independent. In particular, $A$ and $MA$ have the same number of independent columns and therefore also the same rank.
+\end{thm}
+
+\begin{thm}[Therorem 3.7]
+    Let $A\bv{x}=\bv{b}$ be a system of $m$ linear equations in $m$ variables (so $A$ is an $m\times m$ matrix). These two statements are equivalent:
+    \begin{props}
+        \item Gaussian Elimination in Algorithm 2 succeeds.
+        \item The columns of $A$ are linearly independent.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Theorem 3.8 Solving $A\bv{x}=\bv{b}$ with Gaussian elimination]
+    Let $A\bv{x}=\bv{b}$ be a system of $m$ linear equations in $m$ variables. If $A$ has linearly independent columns, then Gaussian elimination with back substitution computes the unique solution $\bv{x}$ of the system. If $A$ has linearly dependent columns, then Gaussian elimination fails.
+\end{thm}
+
+\begin{defn}[Def 3.13 Reduced Row Echelon Form]
+    Let $R=[r_{ij}]_{i=1}^m,_{j=1}^n$ be an $m\times n$ matrix. $R$ is in \textit{reduced Row Echelon Form} (RREF) if there is some natural number $n\leq m$ and column indices $1\leq j+1 \leq j_2\leq\dots\leq j_n\leq n$ (the indices of the “Downward step columns” such that the following two conditions hold:
+    \begin{props}
+        \item For every $i\in[r]$, column $j_i$ of $R$ is the standard unit vector $e_i$.
+        \item All entries $r_{ij}$ “below the staircase” are $0$. Formally, an entry $r_{ij}$ is “below the staircase” if: \\
+        a) $i>r$ (the entry is blow row $r$) \\
+        b) $i\leq r$ and $j<j_i$ (The entry is in the part of row $i$ to the left column $j_i$)
+    \end{props}
+\end{defn}
+
+\begin{thm}[Lemma 3.14]
+    A matrix $R$ in RREF ($j_1, \dots, j_r$) has independent columns $j_1, j_r$ and therefore rank $r$.
+\end{thm}
+
+\begin{thm}[Theorem 3.17 Output of Gauss-Jordan Elimination]
+    Let $A$ be an $m\times n$ matrix, and let $(R, j_1, j_2, \dots, j_m, M)$ be the output of Algorithm 6 with input $(A,I)$ where $I$ is the $m\times m$ identity matrix. Then, $M$ is invertible, $R=MA$, and $R$ is in RREF $(j_1, \dots, j_r)$.
+\end{thm}
+
+\begin{thm}[Theorem 3.18 Uniqueness of RREF, and relation to the CR decomposition]
+    Let $A$ be an $m\times n$ matrix. There is a unique $m\times n$ matrix $R$ (the one resulting from Gauss-Jordan elimination on $A$, according to Theorem 3.17), with the following two properties:
+    \begin{props}
+        \item $R=MA$ for some invertible $m\times m$ matrix $M$.
+        \item $R$ is in RREF
+    \end{props}
+\end{thm}
+
+\begin{thm}[Theorem 3.19 Computing inverses with Gauss-Jordan elimination]
+    Let $A$ be an $m\times m$ matrix, and let $(R, j_1, j_2, \dots, j_r, M)$ be the output of running algorithm 6, with input $(A,I)$. Then $A$ is invertible if and only if $R=I$, and in this case $A^{-1}=M$.
+\end{thm}
+
+\begin{defn}[Def 4.1 Vector Space]
+    A vector space is a triple $(V,+,\cdot)$ where $V$ is a set (the vectors), and $+:V\times V\rightarrow V$ is a function (vector addition), $\cdot:\R\times V\rightarrow V$ is a function (scalar multiplication), satisfying the following axioms of a vector space for all $\bv{u}, \bv{v}, \bv{w}\in V$ and all $\lambda,\mu\in\R$:
+    \begin{compactlist}
+        \item $\bv{v}+\bv{w}=\bv{w}+\bv{v}$ (commutativity)
+        \item $\bv{u}+(\bv{v}+\bv{w})=(\bv{u}+\bv{v})+\bv{w}$ (Associativity)
+        \item There is a vector $\bv{0}$ such that $\bv{v}+\bv{0}=\bv{v}$ for all $\bv{v}$ (zero vector)
+        \item There is a vector $-\bv{v}$ such that $\bv{v}+(-\bv{v})=\bv{0}$ (negative vector)
+        \item $1\cdot \bv{v}=\bv{v}$ (identity element)
+        \item $(\lambda\cdot\mu)\bv{v}+\lambda\cdot(\mu\cdot\bv{v})$ (Compatibility $\cdot$ and $\cdot$ in $\R$)
+        \item $\lambda(\bv{v}+\bv{w})=\lambda\bv{v}+\lambda\bv{w}$ (distributivity of $\cdot$ over $+$)
+        \item $(\bv{v}+\bv{w})\lambda=\bv{v}\lambda+\bv{w}\lambda$ (distributivity of $\cdot$ over $+$ in $\R$)
+    \end{compactlist}
+
+    \textbf{Any space that fulfils these axioms is a vector space.}
+\end{defn}
+
+\begin{obs}[Obs 4.2]
+    $(\R^m,+,\cdot)$ with “$+$” as in Definition 1.2 and “$\cdot$” as in Definition 1.3 is a vector space.
+\end{obs}
+
+\begin{defn}[Def 4.3 Polynomial Vector Space]
+    A polynomial $p$ is a formal sum of the form $p=\sum_{i=0}^m p_i x^i$.
+\end{defn}
+
+\begin{thm}[Theorem 4.4]
+    Let $\R[x]$ denote the set of polynomials in one variable $x$. \\
+    Given two polynomials $p=\sum\limits_{i=0}^m p_ix^i$ and $q=\sum\limits_{i=0}^n p_ix^i$, we define $p+q$ to be the polynomial
+    $$p+q=\sum\limits_{i=0}^{\text{max}(m,n)} (p_i+q_i)x^i,\lambda p=\sum\limits_{i=0}^m(\lambda p_i)x^i$$
+    Then, $(\R[x],+,\cdot)$ is a vector space.
+\end{thm}
+
+\begin{thm}[Theorem 4.5]
+    Let $\R^m\times n$ be the set of $m\times n$ matrices, with addition $A+B$ and scalar multiplication $\lambda A$ defined in the usual way (Def 2.2), then $(\R^{m\times n},+,\cdot)$ is a vector space.
+\end{thm}
+
+\begin{obs}[Fact 4.6]
+    Let $(V,+,\cdot)$ be a vector space. $V$ contains exactly one zero vector: $\forall\bv{v (} \bv{v}+\bv{0}=\bv{v})$.
+\end{obs}
+
+\begin{obs}[Fact 4.7]
+    Let $(V,+,\cdot)$ be a vector space. For every $\bv{v}\in V$, there is exactly one negative vector $-\bv{v}$: $\forall\bv{v}(\bv{v}+(-\bv{v)=\bv{0})}$
+\end{obs}
+
+\begin{defn}[Def 4.8 Subspace]
+    Let $V$ be a vector space. A non-empty subset $U\subseteq V$ is called a subspace of $V$, if the following two axioms are true for all $\bv{v},\bv{w}\in U$ and all $\lambda\in\R$:
+    \begin{props}
+        \item $\bv{v}+\bv{w}\in U$
+        \item $\lambda\bv{v}\in U$
+    \end{props}
+\end{defn}
+
+\begin{thm}[Lemma 4.9]
+    Let $U \in V$ be a subspace of vector space $V$. Then $\bv{0}\in U$.
+\end{thm}
+
+\begin{obs}[Fact 4.10]
+    Let $V$ be a vector space, $\bv{v}\in V$. Then, $0\bv{v}=\bv{0}$.
+\end{obs}
+
+\begin{thm}[Lemma 4.11 The Column space is a subspace]
+    Let $A$ be an $m \times n$ matrix. Then the column space $\text{C}(A)=\{A\bv{x}:\bv{x}\in\R^n\}$ is a subspace of $\R^m$.
+\end{thm}
+
+\begin{thm}[Corollary 4.12 The row space is a subspace]
+    Let $A$ be an $m\times n$ matrix. Then, the row space $\text{R}(A)=\text{C}(A^\top)$ is a subspace of $\R^n$.
+\end{thm}
+
+\begin{note}[Exercise 4.13 The nullspace is a subspace]
+    Let $A$ be an $m\times n$ matrix. Then, the nullspace $\text{N}(A)=\{\bv{x}\in\R^n:A\bv{x}=\bv{0\}}$ is a subspace of $\R^n$.
+\end{note}
+
+\begin{thm}[Lemma 4.14 Subspaces are vector spaces]
+    Let $V$ be a vector space, and let $U$ be a subspace of $V$. Then, $U$ is also a vector space (with the same addition and multiplication operations as $V$).
+\end{thm}
+
+\begin{defn}[Def 4.15 Linear combination of a set of vectors]
+    Let $V$ be a vector space, $U\subseteq V$ a (possibly infinite) subset of vectors. A linear combination of $U$ is a sum of the form $\sum_{j=1}^n\lambda_j\bv{v}_j$, where $F=\{\bv{v}_1,\dots,\bv{v}_n\}$ is a finite subset of $U$.
+\end{defn}
+
+\begin{thm}[Lemma 4.16 A vector space is closed under linear combination]
+    Let $V$ be a vector space. Every linear combination of $V$ is again in $V$.
+\end{thm}
+
+\begin{defn}[Def 4.17 Linear independence and span of a set of vectors]
+    Let $V$ be a vector space, $U\subseteq V$ a (possibly infinite) subset of vectors. The set $U$ is called linearly dependent, if there is an element $\bv{v}\in U$, such that $\bv{v}$ is a linear combination of $U\backslash\{\bv{v\}}$. Otherwise, $U$ is called linearly independent. The span of $U$, written as $\text{span}(U)$, is the set of al linear combinations of $U$.
+\end{defn}
+
+\begin{defn}[Def 4.18 Basis]
+    Let $V$ be a vector space. A subset $B\subseteq V$ is called a basis of $V$ if $B$ is linearly independent and $\text{span}(B)=V$.
+\end{defn}
+
+\begin{thm}[Lemma 4.19]
+    Let $V$ be an $m\times n$ matrix. The set of independent columns of $A$ is a basis of the column space $\text{C}(A)$.
+\end{thm}
+
+\begin{obs}[Obs 4.20]
+    Every set $B=\{\bv{v}_1,\bv{v}_2,\dots,\bv{v}_m\}\in\R^m$ of $m$ linearly independent vectors is a basis of $\R^m$.
+\end{obs}
+
+\begin{defn}[Def 4.21 Finitely generated vector space]
+   A vector space $V$  is called finitely generated, if there exists a finite subset $U\subseteq V$ with span $\text{span}(U)=V$.
+\end{defn}
+
+\begin{thm}[Theorem 4.22]
+    Let $V$ be a finitely generated vector space, and let $U\subseteq V$ be a finite subset with $\text{span}(U)=V$. Then $V$ has a basis $B\subseteq U$.
+\end{thm}
+
+\begin{thm}[Lemma 4.23 Steinitz exchange lemma]
+    Let $V$ be a finitely generated vector space, $F\subseteq V$ a finite set of linearly \textit{independent} vectors, and $U\subseteq V$ a finite set of vectors with $\text{span}(U)=V$. Then, the following two statements hold:
+    \begin{props}
+        \item $|F|\leq|U|$
+        \item There exists a subset $E\subseteq U$ of size $|U|-|F|$ such that $\text{span}(F\cup E)=V$.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Theorem 4.24 All bases have the same size]
+    Let $V$ be a finitely generated vector space and let $B,B'\subseteq V$ be two bases of $V$. Then: $|B|=|B'|$
+\end{thm}
+
+\begin{defn}[Def 4.25 Dimension]
+    Let $V$ be a finitely generated vector space. Then $\text{dim}(V)$, is the size of an arbitrary basis $B$ of $V$.
+\end{defn}
+
+\begin{defn}[Def 4.26 Linear transformation between vector spaces]
+    Let $V,W$ be two vector spaces. A function $T:V\rightarrow W$ is called a linear transformation between vector spaces, if the following linearity axiom holds for all $\bv{x}_1,\bv{x}_2\in V$ and all $\lambda_1,\lambda_2\in\R$: $T(\lambda_1\bv{x}_1+\lambda_2\bv{x}_2)=\lambda_1T(\bv{x}_1)+\lambda_2T(\bv{x}_2)$.
+\end{defn}
+
+\begin{thm}[Lemma 4.27 Bijective linear transformations preserve bases]
+    Let $T:V\rightarrow W$ be a bijective linear transformation between two vector spaces $V$ and $W$. Let $B=\{\bv{v}_1,\dots,\bv{v}_l\}\subseteq V$ be a finite set of some size $l$, and $T(B)=\{T(\bv{v}_1),T(\bv{v}_2),\dots,T(\bv{v_l})\}\subseteq W$ the transformed set. Then $|T(B)|=|B|$. Furthermore, $B$ is a basis of $V$ if and only if $T(B)$ is a basis of $W$. We therefore also have $\text{dim}(V)=\text{dim}(W)$.
+\end{thm}
+
+\begin{defn}[Def 4.28 Isomorphic vector spaces, Isomorphism]
+    Let $V,W$ be two vector spaces. If there is a bijective linear transformation $T:V\rightarrow W$, then $V$ and $W$ are called isomorphic, and $T$ is called an isomorphism between $V$ and $W$.
+\end{defn}
+
+\begin{thm}[Theorem 4.29 A basis writes each vector as a unique linear combination]
+    Let $V$ be a finitely generated vector space of dimension $m$ and $B=\{\bv{v}_1,\dots,\bv{v}_m\}\subseteq V$ a basis of $V$. For every $\bv{v}\in V$, there are unique scalars $\lambda_1,\dots,\lambda_m$ such that $\bv{v}=\sum\limits_{j=1}^m\lambda_j\bv{v}_j$.
+\end{thm}
+
+\begin{thm}[Lemma 4.30 Less than $\text{dim}(V)$ vectors do not span $V$]
+    Let $V$ be a finitely generated vector space. Let $U\subseteq V$ be a finite subset of size $|U|<\text{dim}(V)$ Then, $\text{Span}(U)\neq V$
+\end{thm}
+
+\begin{thm}[Theorem 4.31]
+    Let $A$ be an $m\times n$ matrix, and let $R$ in RREF $(j_1, \dots, j_r)$ be the result of Gauss-Jordan elimination of $A$. Then, $A$ has the independent columns at indices $j_1, j_2, \dots, j_r$ and these columns form a basis of the column space $\text{C}(A)$. In particular: $\text{dim}(\text{C}(A))=\text{rank}(A)=r$.
+\end{thm}
+
+\begin{thm}[Theorem 4.32]
+    Let $A$ be an $m\times n$ matrix, and let $R$ in RREF of $A$. Then, the first $r$ columns of $R^\top$ form a basis of the row space $\text{R}(A)$. In particular: $\text{dim}(\text{R}(A))=r$.
+\end{thm}
+
+\begin{thm}[Corollary 4.34 The rank is at most the smaller of the two matrix dimensions]
+    Let $A$ be an $m\times n$ matrix of rank $r$. Then, $r\leq \text{min}(n,m)$.
+\end{thm}
+
+\begin{thm}[Lemma 4.35 Nullspace isomorphism]
+    Let $R$ be an $m\times n$ matrix in RREF and let $k_1, k_2, \dots, k_{n-r}$ be the column indices not in $\{j_1, j_2, \dots,j_3\}$. Then $T:N(R)\mapsto\R^{n-1}, T:\bv{x}\mapsto\vect{\bv{x}_{k_1} \\ \vdots \\ \bv{x}_{k_{n-r}}}$ is an isomorphism (bijective linear transformation) between $N(R)$ and $\R^{n-r}$, in particular, we get $\text{dim}(N(R))=n-r$ from Lemma 4.27.
+\end{thm}
+
+\begin{thm}[Theorem 4.36]
+    Let $A$ be an $m\times n$ matrix and let $R$ in RREF be the result of Gauss-Jordan on $A$. Let $k_1, \dots, k_{n-r}$ be the column indices not in $\{j_1, \dots, j_r\}$ and let $Q$ be the $r\times(n-r)$ submatrix of $R$ containing the first $r$ rows and columns $k_1,\dots, k_{n-r}$. A basis of the nullspace $N(A)$ is given by the $n-r$ vectors $\bv{v}_1, \dots, \bv{v}_{n-r}$, where $\bv{v}_i$ is the vector $\bv{x}\in N(R)$ with $\vect{\bv{x}_{k_1} \\ \vdots \\ \bv{x}_{k_{n-r}}}=e_i,\vect{\bv{x}_{j_1} \\ \vdots \bv{x}_{j_r}}=-Qe_i$. Note, that $Qe_i$ is the $i$-th column of $Q$. In particular $\text{dim}(N(A))=n-r$.
+\end{thm}
+
+\begin{defn}[Def 4.37 Solution space of a system of linear equations]
+    Let $A$ be an $m\times n$ matrix and $\bv{b}\in \R^m$. The set $\text{sol}(A,\bv{b}):=\{\bv{x}\in\R^n:A\bv{x}   =\bv{b\}}\subseteq\R^n$ is the solution space of $A\bv{x}=\bv{b}$.
+\end{defn}
+
+\begin{thm}[Theorem 4.68 Solution space from shifting the nullspace]
+    Let $A$ be an $m\times n$ matrix, $\bv{b}\in\R^m$. Let $\bv{s}$ be some solution of $A\bv{x}=\bv{b}$.
+    Then $\text{sol}(A,\bv{b})=\{\bv{s}+\bv{x}:\bv{x}\in N(A)\}$.
+\end{thm}
+
+\begin{thm}[Theorem 4.39 Dimension of the solution space]
+    Let $A$ be an $m\times n$ matrix of rank $r$. If $A\bv{x}   =\bv{b}$ has a solution, then $\text{sol}(A,\bv{b)}$ has dimension $n-r$, where $\text{dim}(\text{sol}(A,\bv{b})):=\text{dim}(N(A)$.
+\end{thm}
+
+\begin{thm}[Theorem 4.40 Systems of rank $m$ are solvable]
+    Let $A$ be an $m\times n$ matrix of rank $r=m$. Then, $A\bv{x}=\bv{b}$ has a solution for every $\bv{b}\in\R^m$.
+\end{thm}
+
+\begin{note}[Informal Theorem 4.41 System of rank less than $m$ are typically unsolvable]
+    Let $A$ be an $m\times n$ matrix of rank $r<m$. For a typical $\bv{b}$, the system $A\bv{x}=\bv{b}$ has no solution.
+\end{note}
+
+\begin{defn}[Def 4.42 Square, underdetermined, overdetermined system]
+    Let $A$ be an $m\times n$ matrix, $\bv{b}\in\R^m$
+    \begin{props}
+        \item If $m=n$ ($A$ is a square matrix) $A\bv{x}=\bv{b}$ is called square.
+        \item If $m<n$ ($A$ is a wide matrix) the system $A\bv{x}=\bv{b}$ is called underdetermined.
+        \item If $m>n$ ($A$ is a tall matrix) the system $A\bv{x}=\bv{b}$ is called overdetermined.
+    \end{props}
+\end{defn}
+
+\begin{thm}[Informal Theorem 4.43 Overdetermined systems are typically unsolvable]
+    Let $A$ be a tall matrix. For a typical $\bv{b}$, the overdetermined system $A\bv{x}=\bv{b}$ has no solution.
+\end{thm}
+
+\begin{thm}[Informal Theorem 4.44 Square and underdetermined systems are typically solvable]
+    Let $\bv{b}\in\R^m,m\leq n$. For a typical matrix $A\in\R^{m\times n}$, the square or underdetermined system $A\bv{x}=\bv{b}$ has a a solution.
+\end{thm}
+
+\begin{defn}[Def 5.1.1]
+    Two vectors $\bv{b},\bv{w} \in\R^n$ are called \textit{orthogonal} if $\bv{v}^\top \bv{w}=\sum_{i=1}^n\bv{v}_i\bv{w}_i=0$. Two subspaces $V$ and $W$ are \textit{orthogonal} if for all $v\in V$ and $w\in W$, the vectors $v$ and $w$ are orthogonal.
+\end{defn}
+
+\begin{obs}[Lemma 5.1.2]
+    Let $\bv{v}_1,\bv{v}_2, \dots, \bv{v}_k$ be a basis of subspace $V$. Let $\bv{w}_1, \bv{w}_2,\dots, \bv{w}_l$ be a basis of subspace $W$. $V$ and $W$ are orthogonal if and only if $\bv{v}_i$ and $\bv{w}_j$ are orthogonal for all $i\in\{1,\dots,k\}$ and $j\in\{1,\dots,l\}$.
+\end{obs}
+
+\begin{thm}[Lemma 5.1.3]
+    Let $V$ and $W$ be two orthogonal subspaces of $\R^n$. Let $\bv{v}_1, \dots, \bv{v}_k$ be a basis of subspace $W$. The set of vectors $\{\bv{v}_1,\dots, \bv{v}_k,\bv{w}_1,\dots,\bv{w}_l\}$ are linearly independent.
+\end{thm}
+
+\begin{thm}[Corollary 5.1.4]
+    Let $V$ and $W$ be orthogonal subspaces. Then $V\cap W=\{0\}$. Moreover, if $\text{dim}(V)=k$ and $\text{dim}(W)=l$, then $\text{dim}(V+W)=k+l\leq n$.
+\end{thm}
+
+\begin{defn}[Def 5.1.5]
+    Let $V$ be a subspace of $\R^n$. We define the orthogonal complement of $V$ as $V^\bot=\{\bv{w}\in\R^n|\bv{w}^\top\bv{v}=\bv{0}, \forall\bv{v}\in V\}$
+\end{defn}
+
+\begin{thm}[Theorem 5.1.6]
+    Let $A\in\R^{m\times n}$ be a matrix. $N(A)=C(A^\top)^\bot=R(A)^\bot$
+\end{thm}
+
+\begin{thm}[Theorem 5.1.7]
+    Let $V$ and $W$ be orthogonal subspaces of $R^n$. The following statements are equivalent:
+    \begin{props}
+        \item $W=V^\bot$
+        \item $\text{dim}(V)+\text{dim}(W)=n$
+        \item Every $\bv{u\in\R^n}$ can be written as $\bv{u}=\bv{v}+\bv{w}$ with unique vectors $\bv{v}\in V$ and $\bv{w}\in W$.
+    \end{props}
+\end{thm}
+
+\begin{thm}[Lemma 5.1.8]
+    Let $V$ be a subspace of $R^n$. Then $V=(V^\bot)^\bot$
+\end{thm}
+
+\begin{thm}[Corollary 5.1.9]
+    Let $A\in\R^{m\times n}$. $N(A)=C(A^\top)^\bot$ and $C(A^\top)=N(A)^\bot$.
+\end{thm}
+
+\begin{thm}[Lemma 5.1.10]
+    Let $A\in\R^{m\times n}$. Then $N(A)=N(A^\top A)$ and $C(A)=C(A^\top A)$.
+\end{thm}
+
+\begin{defn}[Def 5.2.1 Projection of a vector onto a subspace]
+    The projections of a vector $\bv{b}\in\R^m$ on a subspace $S\subseteq \R^m$ is the point in $S$ that is closes to $\bv{b}$. In other words: $\text{proj}_S(\bv{b})=\underset{\bv{p}\in S}{\text{argmin}(\|\bv{b}-\bv{p}\|}$
+\end{defn}
+
+\begin{thm}[Lemma 5.2.2]
+    Let $\bv{a}\in\R^m\backslash\{0\}$. The projection of $\bv{b\in\R^m}$ on $S=\{\lambda\bv{a|\lambda\in\R\}}=C(\bv{a)}$ is given by $\text{proj}_S(\bv{b})=\frac{\bv{a}\bv{a}^\top}{\bv{a}\top\bv{a}}\bv{b}$.
+\end{thm}
+
+\begin{thm}[Lemma 5.2.3]
+    The projection of a vector $\bv{b}\in\R^m$ to the subspace $S=C(A)$ is well-defined. It can be written as $\text{proj}_S(\bv{b)=A\hat{\bv{x}}}$, where $\hat{\bv{x}}$ satisfies the normal equations $A^\top  A\hat{\bv{x}}=A^\top\bv{b}$
+\end{thm}
+
+\begin{thm}[Lemma 5.2.4]
+    $A^\top A$ is invertible if and only if $A$ has linearly independent columns.
+\end{thm}
+
+\begin{thm}[Theorem 5.2.5]
+    Let $S$ be a subspace in $\R^m$ and $A$ a matrix whose columns are a basis of $S$. The projection of $B\in\R^m$ to $S$ is given by $\text{proj}_S(\bv{b})=P\bv{b}$, where $P=A(A^\top A)^{-1}A^\top$ is the projection matrix.
+\end{thm}
+
+\begin{obs}[Fact 6.1.1]
+    A minimizer of $(3)$ is a solution of $(4)$. When $A$ has independent columns, the unique minimizers of $(3)$ is given by $\hat{\bv{x}}=(A^\top A)^{-1} A^\top\bv{b}$.
+\end{obs}
+
+\begin{thm}[Lemma 6.1.2]
+    The columns of the $m\times 2$ matrix $A$ defined before are linearly dependent if and only if $t_i=t_j$ for all $i\neq j$.
+\end{thm}
+
+\end{multicols*}
+\end{document}
