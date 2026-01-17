@@ -210,7 +210,7 @@
 \end{lemma}
 
 \begin{defn}[D 1.21 Linear (in)dependence]
-    Vectors are linearly dependent if:
+    Vectors are linearly independent if:
     \begin{compactoptions}
         \item No vector is a linear combination of the others.
         \item There are no $\lambda_i$, such that $\sum_{i=1}^n\lambda_i\bv{v}_i=\bv{0}$.
@@ -391,8 +391,27 @@
      $(A^\top)^{-1}=(A^{-1})^\top$
 \end{lemma}
 
+\begin{note}[Solving $A\bv{x}=\bv{b}$: Overview]
+    Get the system into $A\bv{x}=\bv{b}$ form. \textit{(Use this if ranks are easy to determine; otherwise proceed with Gaussian Elimination below.)} Three outcomes:
+    \begin{compactitem}
+        \item \textbf{No solution:} $\text{rank}(A) < \text{rank}([A|\bv{b}])$ (inconsistent)
+        \item \textbf{Unique solution:} $\text{rank}(A) = n$ (full column rank, $m \ge n$). Also requires consistency check: $\text{rank}(A) = \text{rank}([A|\bv{b}])$.
+        \item \textbf{Infinite solutions:} $\text{rank}(A) = \text{rank}([A|\bv{b}]) < n$ (underdetermined)
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Gaussian Elimination / Gauss-Jordan]
+    \textbf{Method:} Transform $A$ into upper-triangle (REF) or fully reduced (RREF) via row operations.
+    \begin{compactitem}
+        \item Augment: $[A|\bv{b}]$
+        \item Row reduce using: swap rows, multiply by scalar, add multiple of one row to another
+        \item Back-substitute or read off free variables
+        \item Runtime: $\mathcal{O}(m^3)$ for square matrices
+    \end{compactitem}
+\end{note}
+
 \begin{defn}[D 3.13 Reduced Row Echelon Form]
-    Let $R=[r_{ij}]_{i=1}^m,_{j=1}^n$ be an $m\times n$ matrix. $R$ is in RREF, if ther eis some natural number $r\leq m$ and column indices $1\leq j_1\leq j_2\leq\dots\leq n$ (*the indices of the “downward step”) such that the following two conditions hold:
+    Let $R=[r_{ij}]_{i=1}^m,_{j=1}^n$ be an $m\times n$ matrix. $R$ is in RREF, if there is some natural number $r\leq m$ and column indices $1\leq j_1\leq j_2\leq\dots\leq n$ (*the indices of the “downward step”) such that the following two conditions hold:
     \begin{props}
         \item For every $i\in[r]$, column $j_i$ of $R$ is the standard unit vector $\bv{e}_i$.
         \item All entries $r_{ij}$ “below the staircase” are $0$.
@@ -1011,7 +1030,7 @@
 
 \begin{lemma}[L 9.2.8 Symmetric matrix has real Eigenvalues]
     A symmetric matrix $A\in\R^{n\times n}$ has only real eigenvalues $\lambda\in\C\Rightarrow \lambda\in\R$. \\
-    If $A\bv{v}=\lambda\bv{v}$: $$\lambda\|\bv{v}\|^2=\bar{\lambda}\bv{v}^*\bv{v}=(\lambda\bv{v})^*\bv{v}=(A\bv{v})^*\bv{v}=\bv{v}^*A^*\bv{v}=\bv{v}^*A\bv{v}=\bv{v}^*\lambda\bv{v}=\lambda\|\bv{v}\|^2$$
+    If $A\bv{v}=\lambda\bv{v}$: $$\bar{\lambda}\|\bv{v}\|^2=\bar{\lambda}\bv{v}^*\bv{v}=(\lambda\bv{v})^*\bv{v}=(A\bv{v})^*\bv{v}=\bv{v}^*A^*\bv{v}=\bv{v}^*A\bv{v}=\bv{v}^*\lambda\bv{v}=\lambda\|\bv{v}\|^2$$
     $\implies$ every symmetric matrix $A\in\R^{n\times n}$ has a real eigenvalue $\lambda$ \textbf{(C 9.2.9)}
 \end{lemma}
 
@@ -1043,7 +1062,7 @@
 \subsection{Singular Value Decomposition}
 
 \begin{defn}[D 9.3.1 Singular Value Decomposition]
-    Let $A\in\R^{m\times n}$. There exists orthogonal matrices $U\in\R^{m\times m}$ and $V\in\R^{n\times n}$ such that $U=A=U\Sigma V^\top$, where $\Sigma\in\R^{m\times n}$  is a diagonal matrix, in the sense that $\Sigma_{ij}=0$ when $i\neq j$, and the diagonal elements are non-negative and ordered in descending order. $U^\top U=I$ and $V^\top V=I$. \\
+    Let $A\in\R^{m\times n}$. There exists orthogonal matrices $U\in\R^{m\times m}$ and $V\in\R^{n\times n}$ such that $A=U\Sigma V^\top$, where $\Sigma\in\R^{m\times n}$  is a diagonal matrix, in the sense that $\Sigma_{ij}=0$ when $i\neq j$, and the diagonal elements are non-negative and ordered in descending order. $U^\top U=I$ and $V^\top V=I$. \\
     The columns of $U$ and $V$ are called the left and right singular vectors of $A$, and the diagonal entries of $\Sigma$ are the singular values of $A$, ordered as $\sigma_1\geq\dots\geq\sigma_{\text{min}\{m,n\}}$.
 \end{defn}
 
@@ -1105,6 +1124,19 @@
 \end{note}
 
 \subsection{Fundamental Spaces}
+
+\begin{note}[Quick Rank Reference]
+    For an $m\times n$ matrix $A$ with rank $r$:
+    \begin{compactlist}
+        \item $\text{rank}(A) = \text{rank}(A^\top)$ (row rank = column rank)
+        \item $\text{rank}(A) \le \min(m, n)$ (limited by dimensions)
+        \item $\text{rank}(A) = r \Rightarrow \dim(\textbf{C}(A)) = r, \dim(\textbf{R}(A)) = r$
+        \item $\text{rank}(A) = r \Rightarrow \dim(\textbf{N}(A)) = n - r$ (nullity)
+        \item Full column rank: $\text{rank}(A) = n \Rightarrow$ columns are linearly independent, $\textbf{N}(A) = \{\bv{0}\}$
+        \item Full row rank: $\text{rank}(A) = m \Rightarrow A\bv{x}=\bv{b}$ is solvable for all $\bv{b}$
+        \item Full rank: $\text{rank}(A) = m = n \Rightarrow A$ is invertible
+    \end{compactlist}
+\end{note}
 
 \begin{note}[Basis for Column Space $C(A)$]
     \begin{compactlist}
@@ -1220,10 +1252,14 @@
 
 \begin{compactitem}
     \item \textbf{Trace:} $\text{Tr}(A)=\sum a_{ii}=\sum\lambda_i$ (Sum of diagonal = sum of eigenvalues).
-    \item \textbf{Determinant:} $\text{det}(A)=\prod \lambda_i$ (Product of eigenvalues.
+    \item \textbf{Determinant:} $\text{det}(A)=\prod \lambda_i$ (Product of eigenvalues).
     \item \textbf{Rank:} Rank = Dimension of $C(A)$ = Dimension of $R(A)$ = Number of non-zero singular values.
     \item \textbf{Symmetry:} If $A$ is symmetric, eigenvalues are real, eigenvectors are orthogonal.
-    \item \textbf{Orthogonal matrix $Q$:} $Q^\top Q=I$. Determinant is $\pm 1$. Preserves lengths $(\|Q\bv{x}\|=\|\bv{x}\|)$
+    \item \textbf{Orthogonal matrix $Q$:} $Q^\top Q=I$. Determinant is $\pm 1$. Preserves lengths $(\|Q\bv{x}\|=\|\bv{x}\|)$.
+    \item $A$ is invertible iff no eigenvalue is zero.
+    \item Eigenvalues of $A^k$: $\lambda_i^k$ for each eigenvalue $\lambda_i$.
+    \item Eigenvalues of $A^{-1}$: $\frac{1}{\lambda_i}$ for each eigenvalue $\lambda_i \neq 0$.
+    \item \textbf{Skew-symmetric} ($A = -A^\top$): all eigenvalues are purely imaginary.
 \end{compactitem}
 
 \subsection{Proof Toolkit (Standard Strategies)}
@@ -1357,6 +1393,162 @@
         \item $\text{rank}(AB) \le \min(\text{rank}(A), \text{rank}(B))$.
         \item $\text{rank}(A+B) \le \text{rank}(A) + \text{rank}(B)$.
         \item \textbf{Sylvester:} $\text{rank}(A) + \text{rank}(B) - n \le \text{rank}(AB)$ (where $A: m\times n, B: n\times k$).
+    \end{compactitem}
+\end{note}
+
+\section{Requirements Checklist}
+
+\begin{note}[When can I use this method?]
+    \begin{compactitem}
+        \item \textbf{Gaussian Elimination:} Any matrix.
+        \item \textbf{Matrix Inversion ($A^{-1}$):} $A$ must be square ($n \times n$) AND $\det(A) \neq 0$ (Full rank).
+        \item \textbf{CR Decomposition:} Any matrix $A$.
+        \item \textbf{QR Decomposition:} $A$ must have linearly independent columns (full column rank) for the standard Gram-Schmidt process.    
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Diagonalization ($A=V\Lambda V^{-1}$)]
+    \textbf{Requires:} $A \in \R^{n \times n}$ must have $n$ linearly independent eigenvectors.
+    \begin{compactitem}
+        \item \textit{Sufficient (but not necessary):} $A$ has $n$ distinct eigenvalues.
+        \item \textit{Necessary and Sufficient:} For every eigenvalue $\lambda$, geometric multiplicity = algebraic multiplicity.
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Orthogonal Diagonalization ($A=Q\Lambda Q^\top$)]
+    \textbf{Requires:} $A$ must be \textbf{Symmetric} ($A=A^\top$).
+    \textit{Note:} If $A$ is symmetric, it is \textit{always} diagonalizable with real eigenvalues and orthogonal eigenvectors.
+\end{note}
+
+\begin{note}[Cholesky Decomposition ($A=LL^\top$)]
+    \textbf{Requires:} $A$ must be \textbf{Symmetric} AND \textbf{Positive Definite} (all $\lambda > 0$ / all pivots $>0$).
+\end{note}
+
+\begin{note}[SVD ($A=U\Sigma V^\top$)]
+    \textbf{Requires:} No restrictions! Every matrix $A \in \R^{m \times n}$ has an SVD.
+\end{note}
+
+\begin{note}[Least Squares ($A^\top A \hat{x} = A^\top b$)]
+    \textbf{Unique Solution Requires:} Columns of $A$ must be linearly independent (Full column rank, $N(A)=\{\bv{0}\}$). If not, infinitely many least-squares solutions exist (use Pseudoinverse).
+\end{note}
+
+\newpage
+
+\section{Quick Facts \& Properties}
+
+\begin{obs}[Symmetric Matrices ($A=A^\top$)]
+    \begin{compactitem}
+        \item Eigenvalues are always \textbf{Real}.
+        \item Eigenvectors from different eigenspaces are \textbf{Orthogonal}.
+        \item Always orthogonally diagonalizable.
+        \item Rank = number of non-zero eigenvalues.
+    \end{compactitem}
+\end{obs}
+
+\begin{obs}[Orthogonal Matrices ($Q^\top Q = I$)]
+    \begin{compactitem}
+        \item Rows and columns form an orthonormal basis.
+        \item $Q^{-1} = Q^\top$.
+        \item $\det(Q) = \pm 1$.
+        \item $|\lambda| = 1$ (Eigenvalues lie on the unit circle in $\C$).
+        \item Preserves dot products: $(Q\bv{x}) \cdot (Q\bv{y}) = \bv{x} \cdot \bv{y}$.
+        \item Preserves norms (lengths): $\|Q\bv{x}\| = \|\bv{x}\|$.
+    \end{compactitem}
+\end{obs}
+
+\begin{obs}[Skew-Symmetric Matrices ($A^\top = -A$)]
+    \begin{compactitem}
+        \item Diagonal entries are all $0$.
+        \item $\det(A) \geq 0$ (if $n$ is even), $\det(A)=0$ (if $n$ is odd).
+        \item Eigenvalues are purely imaginary or zero.
+        \item $\bv{x}^\top A \bv{x} = 0$ for all real vectors $\bv{x}$.
+    \end{compactitem}
+\end{obs}
+
+\begin{obs}[Projection Matrices ($P^2 = P = P^\top$)]
+    \begin{compactitem}
+        \item Eigenvalues are only $0$ or $1$.
+        \item If $P$ projects onto $S$, then $I-P$ projects onto $S^\perp$.
+        \item Rank(P) = Dimension of subspace projected onto.
+    \end{compactitem}
+\end{obs}
+
+\begin{obs}[Positive Definite Matrices]
+    \begin{compactitem}
+        \item $\bv{x}^\top A \bv{x} > 0$ for all non-zero $\bv{x}$.
+        \item All eigenvalues $> 0$.
+        \item All pivots $> 0$.
+        \item Determinant $> 0$.
+        \item $A^{-1}$ is also Positive Definite.
+    \end{compactitem}
+\end{obs}
+
+\subsection{Rapid Operations}
+
+\begin{note}[Inverse of $2\times 2$]
+    $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \implies A^{-1} = \frac{1}{ad-bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$
+\end{note}
+
+\begin{note}[Rank Properties]
+    \begin{compactitem}
+        \item $\text{rank}(A) = \text{rank}(A^\top) = \text{rank}(A^\top A) = \text{rank}(AA^\top)$.
+        \item $A$ is invertible $\iff$ Full Rank.
+        \item Full column rank $\implies$ injective (one-to-one).
+        \item Full row rank $\implies$ surjective (onto).
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Determinant Shifts]
+    \begin{compactitem}
+        \item $\det(A^{-1}) = 1/\det(A)$.
+        \item $\det(AB) = \det(A)\det(B)$.
+        \item $\det(kA) = k^n \det(A)$ (for $n \times n$ matrix).
+        \item $\det(A^\top) = \det(A)$.
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Trace Tricks]
+    \begin{compactitem}
+        \item $\text{Tr}(A+B) = \text{Tr}(A) + \text{Tr}(B)$.
+        \item $\text{Tr}(kA) = k\text{Tr}(A)$.
+        \item $\text{Tr}(ABC) = \text{Tr}(BCA) = \text{Tr}(CAB)$ (Cyclic property).
+        \item $\text{Tr}(A^\top A) = \sum_{i,j} a_{ij}^2$ (Sum of all squared entries).
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Block Matrices]
+    For block matrix $M = \begin{bmatrix} A & B \\ 0 & D \end{bmatrix}$ (Block Triangular):
+    \begin{compactitem}
+        \item $\det(M) = \det(A) \cdot \det(D)$.
+        \item Eigenvalues of $M$ = Eigenvalues of $A$ $\cup$ Eigenvalues of $D$.
+        \item If $A, D$ invertible: $M^{-1} = \begin{bmatrix} A^{-1} & -A^{-1}BD^{-1} \\ 0 & D^{-1} \end{bmatrix}$.
+    \end{compactitem}
+    For Block Diagonal $M = \text{diag}(A, D)$: $M^k = \text{diag}(A^k, D^k)$.
+\end{note}
+
+\begin{note}[Cross Product (in $\R^3$)]
+    $\bv{u} \times \bv{v} = \det \begin{bmatrix} \bv{i} & \bv{j} & \bv{k} \\ u_1 & u_2 & u_3 \\ v_1 & v_2 & v_3 \end{bmatrix}$.
+    \begin{compactitem}
+        \item Result is orthogonal to both $\bv{u}$ and $\bv{v}$.
+        \item $\|\bv{u} \times \bv{v}\|$ = Area of parallelogram spanned by $\bv{u}, \bv{v}$.
+        \item $\bv{u} \cdot (\bv{v} \times \bv{w}) = \det([\bv{u}, \bv{v}, \bv{w}])$ (Scalar Triple Product / Volume).
+    \end{compactitem}
+\end{note}
+
+\begin{note}[Quick Eigenvalue Checks]
+    For $2\times 2$ matrix $A$:
+    \begin{compactitem}
+        \item $\lambda_1 + \lambda_2 = \text{Tr}(A)$.
+        \item $\lambda_1 \cdot \lambda_2 = \det(A)$.
+    \end{compactitem}
+    If row sums are constant $s$: $s$ is an eigenvalue with eigenvector $[1, 1, \dots, 1]^\top$.
+    If column sums are constant $s$: $s$ is an eigenvalue (of $A^\top$ and thus $A$).
+\end{note}
+
+\begin{note}[Nilpotent \& Idempotent]
+    \begin{compactitem}
+        \item \textbf{Nilpotent:} $A^k = 0$ for some $k$. All eigenvalues are $0$. $\det(A)=0, \text{Tr}(A)=0$.
+        \item \textbf{Idempotent:} $A^2 = A$ (like projections). Eigenvalues are only $0$ or $1$.
     \end{compactitem}
 \end{note}
 
