@@ -651,7 +651,7 @@
 \end{lemma}
 
 \begin{theorem}[T 5.2.5 Projection in terms of projection matrix]
-    $\text{proj}_S(\bv{b})=P\bv{b}$ with projection matrix $P=A(A^{-1}A)A^\top$. $A$ is a matrix given in a task.
+    $\text{proj}_S(\bv{b})=P\bv{b}$ with projection matrix $P=A(A^\top A)^{-1}A^\top$. $A$ is a matrix given in a task.
 \end{theorem}
 
 \section{Applications of Orthogonality and Projections}
@@ -723,7 +723,7 @@
 \end{obs}
 
 \begin{defn}[D 6.3.8 Gram-Schmidt algorithm]
-    This algorithm is used to construct orthogonal bases. We have linearly independent vectors $\bv{a}_1,\dots,\bv{a}_n$, that span a subspace $S$, then Gram-Schmidt constructs $\bv{q}_1,\dots,\bv{q}_n$ by:
+    This algorithm is used to construct orthonormal bases. We have linearly independent vectors $\bv{a}_1,\dots,\bv{a}_n$, that span a subspace $S$, then Gram-Schmidt constructs $\bv{q}_1,\dots,\bv{q}_n$ by:
     \begin{compactlist}
     \item $\bv{q}_1=\frac{\bv{a}_1}{\|\bv{a}_1\|}$
     \item For $k=2,\dots,n$, $\bv{q}_k'=\bv{a}_k-\sum_{i=1}^{k-1}(\bv{a}_k^\top\bv{q}_i)\bv{q}_i$
@@ -754,8 +754,8 @@
 \end{defn}
 
 \begin{defn}[D 6.4.7 CR Decomposition with pseudoinverse]
-    For $A\in\R^{m\times n}$ with $\text{rank}(A)=r$ and a \textit{CR}-decomposition $A=CR$, we define $A^\dagger=R^\top C^\top$. \\
-    In general, $A^\dagger=R^\top(C^\top C)^{-1}=R^\top(C^\top CRR^\top)^{-1}C^\top=R^\top(C^\top AR^\top)^{-1}C^\top$.
+    For $A\in\R^{m\times n}$ with $\text{rank}(A)=r$ and a \textit{CR}-decomposition $A=CR$, we define $A^\dagger=R^\dagger C^\dagger$. \\
+    Which can be written as, $A^\dagger=R^\top(RR^\top)^{-1}(C^\top C)^{-1}C^\top=R^\top(C^\top CRR^\top)^{-1}C^\top=R^\top(C^\top AR^\top)^{-1}C^\top$.
 \end{defn}
 
 \begin{lemma}[L 6.4.8 Unique solution of least squares with pseudoinverse]
