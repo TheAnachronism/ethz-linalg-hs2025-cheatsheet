@@ -882,7 +882,7 @@
 \end{note}
 
 \begin{theorem}[T 8.1.2 Fundamental Theorem of Algebra]
-    Any degree $n$ non-constant $(n\geq 1)$ polynomial $P(z)=\alpha_nz^n+a_{n-1}^{n-1}+\dots+\alpha_1z+\alpha_0, (\alpha_n\neq 0)$ has a zero: there exist $\lambda\in\C$ such that $P(\lambda)=0$. \\
+    Any degree $n$ non-constant $(n\geq 1)$ polynomial $P(z)=\alpha_nz^n+a_{n-1}z^{n-1}+\dots+\alpha_1z+\alpha_0, (\alpha_n\neq 0)$ has a zero: there exist $\lambda\in\C$ such that $P(\lambda)=0$. \\
     A degree $n$ polynomial has at most $n$ distinct zeros (roots).
 \end{theorem}
 
@@ -1049,7 +1049,7 @@
 \end{defn}
 
 \begin{obs}[P 9.2.12 Positivity of the quadratic form]
-    A symmetric matrix $A\in\R^{n\times n}$ is PSD iff. $\bv{x}^\top A\bv{x}\geq 0$ for all $\bv{x}\in\R^n$. Analogously, its PD iff. $\bv{x}^\top A\bv{x}> 0$ for all $\bv{x}\in\R^n$.
+    A symmetric matrix $A\in\R^{n\times n}$ is PSD iff. $\bv{x}^\top A\bv{x}\geq 0$ for all $\bv{x}\in\R^n$. Analogously, its PD iff. $\bv{x}^\top A\bv{x}> 0$ for all $\bv{x}\in\R^n\backslash\{0\}$.
 \end{obs}
 
 \begin{defn}[D 9.2.13 Gram Matrix]
