@@ -170,7 +170,7 @@
 \begin{defn}[D 1.7 Combination Types]
     \begin{props}
         \item \textbf{Affine:} $\sum_{i=1}^n \lambda_i=1$
-        \item \textbf{Conic:} $\lambda_i\geq 0$ for $j=1,2,\dots, n$
+        \item \textbf{Conic:} $\lambda_j\geq 0$ for $j=1,2,\dots, n$
         \item \textbf{Convex:} \textit{Both} Affine and Conic.
     \end{props}
 \end{defn}
@@ -192,7 +192,7 @@
 
 \begin{lemma}[L 1.12 Cauchy-Schwarz inequality]
     $|\bv{v}\cdot\bv{w}|\leq\|\bv{v}\|\|\bv{w}\|$ for any two vectors  $\bv{v},\bv{w}\in\R^m$. \\
-    Equality if $\bv{v}\lambda=\bv{w}$ or $\bv{w}\lambda=\bv{v}$.
+    Equality if $\bv{w}=\lambda\bv{v}$ or $\bv{v}=\lambda\bv{w}$.
 \end{lemma}
 
 \begin{defn}[D 1.14 Angles]
@@ -344,7 +344,7 @@
 \end{obs}
 
 \begin{lemma}[L 2.40 Matrix multiplication with transposition]
-    $(AB)^\top=B^\top A^\top,(A\top)^\top=A$
+    $(AB)^\top=B^\top A^\top,(A^\top)^\top=A$
 \end{lemma}
 
 \begin{defn}[D 2.44 Outer product]
@@ -358,7 +358,7 @@
         0 & \textbf{1} & 2 & 1 \\
         0 & 0 & 0 & 0
     \end{bmatrix}$. Use Gauss-Jordan elimination to find it. \\
-    \textbf{RREF} is simply REF without any zero rows. (i.e. in $R_0, R$ (in RREF would be $R_0$  without the last row).
+    \textbf{RREF} is simply REF without any zero rows. (i.e. in $R_0, R$ (in RREF would be $R_0$  without the last row), the leading entries in each non-zero row is $1$, and each leading $1$ is the \textit{only} non-zero entry in its column.
 \end{theorem}
 
 \section{Linear Equations}
@@ -562,7 +562,7 @@
 \subsection{All solutions of $A\bv{x}=\bv{b}$}
 
 \begin{defn}[D 4.37 Solution space]
-    Set of all solutions of $A\bv{x}=\bv{b}$, thus $\text{Sol}(A,\bv{b}):=\{x\bv{x}\in\R^n:A\bv{x}=\bv{b}\}\subseteq\R^n$.
+    Set of all solutions of $A\bv{x}=\bv{b}$, thus $\text{Sol}(A,\bv{b}):=\{\bv{x}\in\R^n:A\bv{x}=\bv{b}\}\subseteq\R^n$.
 \end{defn}
 
 \begin{theorem}[T 4.38 Solution space from shifting the nullspace]
@@ -609,7 +609,7 @@
 \end{lemma}
 
 \begin{lemma}[L 5.1.3 Linear independence of bases of orthogonal subspaces]
-    Let $V$ and $W$  be two orthogonal subspaces of $\R^n$ with the bases $\bv{v}_1,\dots,\bv{v}_k$, $\bv{w}_1,\dots,\bv{w}_;$. The set of vectors $\{\bv{v}_1,\dots,\bv{v}_k,\bv{w}_1,\dots,\bv{w}_l\}$ is linearly independent.
+    Let $V$ and $W$  be two orthogonal subspaces of $\R^n$ with the bases $\bv{v}_1,\dots,\bv{v}_k$, $\bv{w}_1,\dots,\bv{w}_l$. The set of vectors $\{\bv{v}_1,\dots,\bv{v}_k,\bv{w}_1,\dots,\bv{w}_l\}$ is linearly independent.
 \end{lemma}
 
 \begin{corollary}[C 5.1.4 Combinations of subspaces]
@@ -651,7 +651,7 @@
 \end{lemma}
 
 \begin{theorem}[T 5.2.5 Projection in terms of projection matrix]
-    $\text{proj}_S(\bv{b})=P\bv{b}$ with projection matrix $P=A(A^\top A)^{-1}A^\top$. $A$ is a matrix given in a task.
+    $\text{proj}_S(\bv{b})=P\bv{b}$ with projection matrix $P=A(A^\top A)^{-1}A^\top$. $A$ is a matrix given in a task, but has to have linearly independent columns.
 \end{theorem}
 
 \section{Applications of Orthogonality and Projections}
@@ -675,7 +675,7 @@
         1 & \bv{t}_n
     \end{bmatrix}$ and a result vector $\bv{b}=\begin{bmatrix}
         \bv{b}_1 \\ \vdots \\ \bv{b}_n
-    \end{bmatrix}$ where $n$ is the total number of data points and $\bv{t}_i$ is the slope of the $i$th function, where $\bv{b}_i$ is its output. The first column is all $1$s because the constant element has no scalar. This comes from the following concept: $f(t)=\alpha_0+\alpha_1 $, so if the first data point is $(1,2)$, we get $\alpha+\alpha_1\cdot 1=2$, which will then transform into a SLE with other equations.
+    \end{bmatrix}$ where $n$ is the total number of data points and $\bv{t}_i$ is the slope of the $i$th function, where $\bv{b}_i$ is its output. The first column is all $1$s because the constant element has no scalar. This comes from the following concept: $f(t)=\alpha_0+\alpha_1 t$, so if the first data point is $(1,2)$, we get $\alpha_0+\alpha_1(1)=2$, which will then transform into a SLE with other equations.
 \end{note}
 
 \begin{lemma}[L 6.1.2]
@@ -774,7 +774,8 @@
         \item $A^\dagger A$ is symmetric, and the projection matrix for the projection on $\mathcal{C}(A^\top)$.
     \end{compactitem}
 
-    Moreover, $AA^\dagger=CRR^\top(RR^\top)^{-1}(C^\top C)^{-1}C^\top = C(C^\top C)^{-1}C^\top$, which is the projection onto $\mathcal{C}(A)$, and $(AA^\dagger)^\top=AA^\dagger$.
+    Moreover,
+    $$AA^\dagger=CRR^\top(RR^\top)^{-1}(C^\top C)^{-1}C^\top = C(C^\top C)^{-1}C^\top=(C(C^\top C)^{-1}C^\top)^\top$$, which is the projection onto $\mathcal{C}(A)$, and $(AA^\dagger)^\top=AA^\dagger$.
 \end{theorem}
 
 \section{The Determinant}
@@ -788,7 +789,7 @@
 \begin{defn}[D 7.1.1 $2\times 2$ Determinant]
     For $A=\begin{bmatrix}
         a & b \\ c & d
-    \end{bmatrix}, \det=ad-bc$.
+    \end{bmatrix}, \det(A)=ad-bc$.
 \end{defn}
 
 \begin{lemma}[L 7.1.2 Multiplication of determinants]
@@ -860,7 +861,12 @@
 \subsection{Complex Numbers}
 
 \begin{note}[Operations]
-    $i^2=-1$ (\textbf{NOT} $i=\sqrt{-1}$, since otherwise $1=-1$). Complex number $z_j=a_j+b_ki$. \textit{Addition, Subtraction} $(a_1\pm a_2)+(b_1\pm b_2)i$. \textit{Multiplication} $(a_1a_2-b1_b2)+(a_1b_2+a_2b_1)i$. \textit{Division} $\frac{a_1b_1+a_2b_2}{b_1^2+b_2^2}+\frac{a_2b_1-a_1b_2}{b_1^2b_2^2}i$
+    $i^2=-1$ (\textbf{NOT} $i=\sqrt{-1}$). Let $z_1=a_1+b_1i$ and $z_2=a_2+b_2i$.
+    \begin{compactlist}
+        \item \textbf{Addition/Subtraction}: $(a_1\pm a_2)+(b_1\pm b_2)i$ \textit{Ex:} $(3+2i) + (1-4i) = (3+1) + (2-4)i = \mathbf{4-2i}$
+        \item \textbf{Multiplication}: $(a_1a_2-b_1b_2)+(a_1b_2+a_2b_1)i$ \textit{Ex:} $(3+2i)(1-4i) = (3(1)-2(-4)) + (3(-4)+1(2))i = (3+8) + (-12+2)i = \mathbf{11-10i}$
+        \item \textbf{Division}: $\frac{a_1a_2+b_1b_2}{a_2^2+b_2^2}+\frac{a_2b_1-a_1b_2}{a_2^2+b_2^2}i$ \textit{Ex:} $\frac{3+2i}{1-4i} = \frac{3(1)+2(-4)}{1^2+(-4)^2} + \frac{1(2)-3(-4)}{1^2+(-4)^2}i = \frac{3-8}{1+16} + \frac{2+12}{1+16}i = \mathbf{\frac{-5}{17} + \frac{14}{17}i}$
+    \end{compactlist}
 \end{note}
 
 \begin{note}[Parts]
@@ -868,7 +874,7 @@
 \end{note}
 
 \begin{note}[R 8.1.1 Euler's formula]
-    For $\theta\in\R,e^{i\theta}=\cos\theta+i \sin\theta\Rightarrow e^{i\pi}=-1$
+    For $\theta\in\R,e^{i\theta}=\cos\theta+i \sin\theta\Rightarrow e^{i\pi}+1=0$
 \end{note}
 
 \begin{note}[Polar form of a complex number]
